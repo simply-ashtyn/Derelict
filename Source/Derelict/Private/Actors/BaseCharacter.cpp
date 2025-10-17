@@ -9,7 +9,7 @@
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetRelativeLocation(FVector(0., 0., 60.));
 	SpringArm->SetupAttachment(GetRootComponent() /*, Not needed unless we have to set something by it's SOCKET'*/);
@@ -20,13 +20,18 @@ ABaseCharacter::ABaseCharacter()
 	GetMesh()->SetGenerateOverlapEvents(true);
 
 	isDead = false;
+	MaxStamina = 10.f;
+	WalkSpeed = 600.f;
+	SprintSpeed = 1200.f;
 }
 
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CurrentStamina = MaxStamina;
+	PlayerController = (APlayerController*)GetController();
+
 }
 
 void ABaseCharacter::HandleDeath()
@@ -34,11 +39,19 @@ void ABaseCharacter::HandleDeath()
 
 }
 
+void ABaseCharacter::RestoreStamina(float Time)
+{
+	if (CurrentStamina < MaxStamina)
+	{
+		CurrentStamina++;
+	}
+}
+
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	RestoreStamina(DeltaTime);
 }
 
 // Called to bind functionality to input

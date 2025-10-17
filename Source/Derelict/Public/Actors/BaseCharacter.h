@@ -27,6 +27,8 @@ protected:
 
 	/// PLAYER ATTRIBUTES
 	bool isDead;
+	float MaxStamina;
+	float CurrentStamina;
 
 	/// PLAYER COMPONENETS
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -37,10 +39,14 @@ protected:
 	/// FUNCTIONS
 	UFUNCTION(BlueprintCallable)
 	void HandleDeath();
+	void RestoreStamina(float Time);
 
 private:
 	/// Player Input Functions
 	APlayerController* PlayerController;
 	void InputAxisMoveForward(float AxisValue);
 	void Strafe(float value);
+
+	float WalkSpeed;
+	float SprintSpeed;
 };
