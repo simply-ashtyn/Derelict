@@ -11,7 +11,7 @@ ABaseCharacter::ABaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
-	SpringArm->SetRelativeLocation(FVector(0., 0., 60.));
+	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 90.f));
 	SpringArm->SetupAttachment(GetRootComponent() /*, Not needed unless we have to set something by it's SOCKET'*/);
 	SpringArm->bUsePawnControlRotation = true;
 
