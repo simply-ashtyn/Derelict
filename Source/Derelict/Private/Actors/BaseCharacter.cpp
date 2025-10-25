@@ -4,6 +4,7 @@
 #include "Actors/BaseCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -63,6 +64,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("LookUp", this, &ABaseCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABaseCharacter::InputAxisMoveForward);
 	PlayerInputComponent->BindAxis("Strafe", this, &ABaseCharacter::Strafe);
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &ABaseCharacter::OpenInventory);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ABaseCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ABaseCharacter::SprintEnd);
 }
 
 void ABaseCharacter::InputAxisMoveForward(float AxisValue)
@@ -76,4 +80,19 @@ void ABaseCharacter::Strafe(float value)
 	AddMovementInput(FRotationMatrix(MakeRotation).GetScaledAxis(EAxis::Y), value);
 
 	//AddMovementInput(FRotator(0.f, GetControlRotation().Yaw, 0.f).Vector().RightVector, value);
+}
+
+void ABaseCharacter::OpenInventory()
+{
+
+}
+
+void ABaseCharacter::SprintStart()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void ABaseCharacter::SprintEnd()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }

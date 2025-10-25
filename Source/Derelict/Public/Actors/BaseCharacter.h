@@ -46,6 +46,9 @@ private:
 	APlayerController* PlayerController;
 	void InputAxisMoveForward(float AxisValue);
 	void Strafe(float value);
+	void OpenInventory();
+	void SprintStart();
+	void SprintEnd();
 
 	float WalkSpeed;
 	float SprintSpeed;
