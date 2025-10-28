@@ -9,7 +9,7 @@
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 90.f));
@@ -20,6 +20,7 @@ ABaseCharacter::ABaseCharacter()
 	PlayerCamera->SetupAttachment(SpringArm);;
 	GetMesh()->SetGenerateOverlapEvents(true);
 
+	bPaused = false;
 	isDead = false;
 	MaxStamina = 10.f;
 	WalkSpeed = 600.f;
@@ -65,6 +66,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABaseCharacter::InputAxisMoveForward);
 	PlayerInputComponent->BindAxis("Strafe", this, &ABaseCharacter::Strafe);
 	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &ABaseCharacter::OpenInventory);
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &ABaseCharacter::Pause);
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ABaseCharacter::SprintStart);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ABaseCharacter::SprintEnd);
 }
@@ -85,6 +87,20 @@ void ABaseCharacter::Strafe(float value)
 void ABaseCharacter::OpenInventory()
 {
 
+}
+
+void ABaseCharacter::Pause()
+{
+	if (bPaused == false)
+	{
+		PlayerController->UnPossess();
+		bPaused = true;
+	}
+	else
+	{
+		PlayerController->Possess(this);
+		bPaused = false;
+	}
 }
 
 void ABaseCharacter::SprintStart()

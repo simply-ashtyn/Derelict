@@ -14,6 +14,10 @@ class DERELICT_API ABaseCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
+	UPROPERTY(BlueprintReadOnly)
+	APlayerController* PlayerController;
+	UPROPERTY(BlueprintReadOnly)
+	bool bPaused;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -43,10 +47,10 @@ protected:
 
 private:
 	/// Player Input Functions
-	APlayerController* PlayerController;
 	void InputAxisMoveForward(float AxisValue);
 	void Strafe(float value);
 	void OpenInventory();
+	void Pause();
 	void SprintStart();
 	void SprintEnd();
 
